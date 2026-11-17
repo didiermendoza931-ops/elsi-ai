@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELSI AI - Video Studio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#090b14;color:#fff;min-height:100vh}
+.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#101321;border-right:1px solid #25283c;padding:25px 17px}
+.logo{font-size:25px;font-weight:bold;margin-bottom:40px}
+.logo span{color:#9c70ff}
+.menu{color:#9298b2;font-size:12px;margin:25px 10px 12px}
+.nav{display:block;padding:14px;margin:7px 0;border-radius:10px;color:#b9bdd0;text-decoration:none;cursor:pointer}
+.nav.active,.nav:hover{background:#292044;color:white}
+.main{flex:1;padding:30px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px}
+.tag{background:#211b3b;color:#b99aff;padding:9px 14px;border-radius:20px;font-size:12px}
+h1{font-size:30px;margin-bottom:10px}
+.subtitle{color:#969bb2;margin-bottom:28px}
+.hero{padding:28px;background:linear-gradient(120deg,#211a40,#121a31);border:1px solid #393052;border-radius:18px;margin-bottom:25px}
+.hero h2{font-size:23px;margin-bottom:10px}
+.hero p{color:#b3b5c8;line-height:1.6}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:#121625;border:1px solid #272c41;border-radius:16px;padding:23px}
+.panel h3{margin-bottom:17px}
+.muted{color:#9298ad;font-size:13px;line-height:1.6}
+.upload{margin-top:17px;border:1px dashed #7654bd;border-radius:13px;padding:35px 15px;text-align:center;background:#17172a}
+.upload input{display:block;width:100%;margin-top:17px;color:#bbb}
+.btn{background:linear-gradient(100deg,#7951ed,#4b75ec);color:white;border:0;padding:13px 20px;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:17px}
+.btn:hover{opacity:.85}
+input[type=number]{background:#20243a;border:1px solid #373d57;padding:10px;color:white;border-radius:8px;width:85px}
+.option{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #292d40}
+input[type=checkbox]{accent-color:#9670ff;width:18px;height:18px}
+.status{margin-top:20px;color:#b9a2ff;font-size:13px}
+@media(max-width:750px){.sidebar{width:75px;padding:15px 8px}.logo{font-size:16px}.nav{font-size:0;text-align:center;padding:13px 2px}.menu{font-size:9px;margin:20px 0}.main{padding:18px}.grid{grid-template-columns:1fr}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="logo">ELSI<span> AI</span></div>
+<div class="menu">MENÚ PRINCIPAL</div>
+<a class="nav active">⌂ Inicio</a>
+<a class="nav" href="#crear">✂ Crear clips</a>
+<a class="nav" href="#generador">✦ Generador IA</a>
+<a class="nav" href="#proyectos">▣ Mis proyectos</a>
+<div class="menu">CUENTA</div>
+<a class="nav">⚙ Configuración</a>
+</aside>
+
+<main class="main">
+<div class="top">
+<strong>ELSI AI STUDIO</strong>
+<span class="tag">● ESPACIO CREATIVO</span>
+</div>
+
+<h1>Transforma tus videos con IA</h1>
+<p class="subtitle">Tu espacio inteligente para crear contenido audiovisual.</p>
+
+<section class="hero">
+<h2>Bienvenido a ELSI AI</h2>
+<p>Analiza tus videos, descubre momentos interesantes y prepara clips para tus redes sociales desde un solo lugar.</p>
+</section>
+
+<div class="grid">
+<section class="panel" id="crear">
+<h3>✂ Crear clips</h3>
+<p class="muted">Selecciona un video propio o que tengas autorización para procesar.</p>
+<div class="upload">
+<div style="font-size:35px">⇧</div>
+<strong>Sube tu video</strong>
+<p class="muted">Selecciona un archivo de tu computadora</p>
+<input type="file" id="video" accept="video/*">
+</div>
+<p class="status" id="fileStatus">Ningún video seleccionado.</p>
+<button class="btn" onclick="selectVideo()">Preparar video</button>
+</section>
+
+<section class="panel" id="generador">
+<h3>✦ Configuración de clips</h3>
+<div class="option"><span>Clips deseados</span><input type="number" id="cantidad" min="3" max="10" value="5"></div>
+<div class="option"><span>Formato vertical 9:16</span><input type="checkbox" checked></div>
+<div class="option"><span>Subtítulos</span><input type="checkbox" checked></div>
+<div class="option"><span>Títulos automáticos</span><input type="checkbox" checked></div>
+<button class="btn" onclick="prepare()">Preparar proyecto</button>
+<p class="status" id="message">Listo para configurar tu proyecto.</p>
+</section>
+</div>
+
+<section class="panel" id="proyectos" style="margin-top:20px">
+<h3>▣ Mis proyectos</h3>
+<p class="muted">Aquí aparecerán tus proyectos y clips guardados cuando conectemos el almacenamiento.</p>
+</section>
+</main>
+</div>
+
+<script>
+function selectVideo(){
+const file=document.getElementById('video').files[0];
+document.getElementById('fileStatus').textContent=file?'Video seleccionado: '+file.name:'Primero selecciona un video.';
+}
+function prepare(){
+const file=document.getElementById('video').files[0];
+const amount=Number(document.getElementById('cantidad').value);
+const msg=document.getElementById('message');
+if(!file){msg.textContent='Primero debes seleccionar un video.';return;}
+if(amount<3||amount>10){msg.textContent='Selecciona entre 3 y 10 clips.';return;}
+msg.textContent='Proyecto configurado. El motor de procesamiento se conectará en la siguiente etapa.';
+}
+</script>
+</body>
+</html>
